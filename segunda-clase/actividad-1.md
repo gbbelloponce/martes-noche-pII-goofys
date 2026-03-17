@@ -25,13 +25,13 @@
   -> inicializo una lista vacia
 
 - Apilar
-  -> inserto el elemento dado en el indice 0 de la lista lista
+  -> inserto el elemento dado en el índice 0 de la lista, corro todos los elementos existentes al siguiente índice
 
 - Desapilar
-  -> me devuelve el elemento en el indice 0 de la lista
+  -> devuelvo el elemento en el índice 0 de la lista, corro todos los elementos existentes al índice anterior
 
 - Tope
-  -> devuelvo el elemento en el indice 0
+  -> devuelvo el elemento en el índice 0
 
 - PilaVacia
   -> devuelvo true si la lista no tiene elementos
