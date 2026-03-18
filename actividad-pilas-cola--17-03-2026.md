@@ -1,41 +1,43 @@
-# Pila (Stack)
+# Pila (Stack) de pestañas del navegador web
 
 ## Actividad 1
 
-### Desde el lado del usuario:
+### Desde el lado del usuario (uno como usuario del navegador):
 
 - InicializarPila
-  -> no le doy nigun parametro, me devuelve una pila vacia
+  -> Abro una pestaña nueva; el historial nace vacío.
 
 - Apilar
-  -> le doy un elemento, me lo apila
+  -> Entri a una página (ej. Google) y luego a otra (ej. Wikipedia); el sistema las va "apilando" una sobre otra.
 
 - Desapilar
-  -> me devuelve el elemento que está en el tope
+  -> Toco la flechita de "Atrás"; el navegador te saca de la página actual (el último que entró) para devolverte a la anterior.
 
 - Tope
-  -> me devuelve el proximo elemento a desapilar
+  -> Es la página que estás viendo ahora mismo; representa el próximo elemento a salir si decidís volver atrás.
 
 - PilaVacia
-  -> me indica si la pila está vacía
+  -> Si el botón de "Atrás" está deshabilitado, es porque la pila no tiene más páginas guardadas.
 
 
 ### Desde el lado del implementador:
 
 - InicializarPila
-  -> inicializo una lista vacia
+  -> Creo un arreglo de memoria (implementación estática) para guardar las direcciones URL.
 
 - Apilar
-  -> inserto el elemento dado en el índice 0 de la lista, corro todos los elementos existentes al siguiente índice
+  -> Cuando el usuario entra a una web nueva, la inserto obligatoriamente en el índice 0. Para hacer lugar, tenés que "correr" todos los elementos existentes un lugar hacia la derecha.
+
+<small>**Nota técnica**: Según la fuente, esta estrategia es "lentísima" porque desplazar elementos es muy caro en tiempo de CPU.</small>
 
 - Desapilar
-  -> devuelvo el elemento en el índice 0 de la lista, corro todos los elementos existentes al índice anterior
+  -> Devuelvo la URL que está en el índice 0. Inmediatamente después, desplazo todos los elementos restantes hacia la izquierda para que el nuevo tope vuelva a ocupar la posición inicial.
 
 - Tope
-  -> devuelvo el elemento en el índice 0
+  -> Simplemente muestro el contenido guardado en la posición 0 del arreglo.
 
 - PilaVacia
-  -> devuelvo true si la lista no tiene elementos
+  -> Simplemente muestro el contenido guardado en la posición 0 del arreglo.
 
 <hr/>
 
