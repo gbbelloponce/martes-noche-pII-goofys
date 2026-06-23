@@ -1,0 +1,457 @@
+RESPUESTAS A LAS PREGUNTAS ESPECÍFICAS DE LA PRÁCTICA
+=====================================================
+
+EJERCICIO 1: INSERCIÓN RECURSIVA
+=================================
+
+PREGUNTA: Indicar qué complejidad posee en peor caso
+
+RESPUESTA:
+
+Complejidad Temporal Peor Caso: O(n)
+
+Explicación:
+El peor caso ocurre cuando el árbol está completamente degenerado (forma de lista).
+Esto sucede cuando los datos están ordenados (ascendente o descendente).
+
+Ejemplo de degeneración:
+  Insertar: 1, 2, 3, 4, 5, ..., n
+
+  Árbol resultante:
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+           \
+            ...
+             \
+              n
+
+En este caso, para buscar/insertar cualquier elemento, la función recursiva
+realiza n comparaciones (una por cada nivel del árbol).
+
+Casos:
+- Mejor caso: O(log n) - si el árbol está perfectamente balanceado
+- Caso promedio: O(log n) - si el árbol está razonablemente balanceado
+- Peor caso: O(n) - si el árbol está completamente degenerado
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 2: INSERCIÓN ITERATIVA
+=================================
+
+PREGUNTAS PLANTEADAS:
+
+a) ¿Qué está haciendo el método main de TestRecursividadABB?
+
+RESPUESTA:
+El método main intenta insertar 50,000 números consecutivos (1, 2, 3, ..., 50,000)
+en un Árbol Binario de Búsqueda utilizando la implementación recursiva.
+
+Código:
+```java
+ABBEnteros abb = new ABBEnterosImpl();
+int profundidad = 0;
+try {
+    for (int i = 1; i <= 50000; i++) {
+        abb.agregar(i);
+        profundidad++;
+    }
+} catch (StackOverflowError e) {
+    System.out.println("StackOverflow en profundidad: " + profundidad);
+}
+```
+
+Lo que hace:
+1. Crea un ABB vacío
+2. Intenta agregar 50,000 valores en orden ascendente
+3. Captura la excepción StackOverflowError si ocurre
+4. Imprime la profundidad en la que se produjo el error
+
+Propósito:
+Demostrar las limitaciones de la recursión con datos degenerados.
+
+
+───────────────────────────────────────────────────────────────────────────
+
+b) ¿Qué problemática se evidencia y cómo se relaciona con recursión/iteración?
+
+RESPUESTA:
+
+PROBLEMÁTICA IDENTIFICADA:
+Al insertar números en orden ascendente, el árbol se convierte en una lista.
+Esto causa que la implementación recursiva ejecute 50,000 llamadas anidadas.
+La JVM tiene un límite de profundidad de pila (~10,000 frames).
+Resultado: StackOverflowError
+
+RELACIÓN CON RECURSIÓN:
+- Recursiva: Cada llamada agregarRecursivo() crea un frame en la pila
+  * agregarRecursivo(raiz, 1)
+    └─ agregarRecursivo(raiz.der, 2)
+       └─ agregarRecursivo(raiz.der.der, 3)
+          └─ ... (50,000 veces)
+  * Con 50,000 elementos, hay 50,000 frames anidados
+  * La pila solo permite ~10,000 frames
+  * ERROR: StackOverflowError
+
+RELACIÓN CON ITERACIÓN:
+- Iterativa: Usa un bucle while, no llamadas recursivas
+  * while (true) {
+      actual = actual.izquierdo o actual.derecho;
+    }
+  * Solo usa 1 frame (el de agregarIterativo)
+  * La variable 'actual' se reasigna sin crear nuevos frames
+  * La pila NO crece
+  * ÉXITO: Sin errores, incluso con 50,000 elementos
+
+
+───────────────────────────────────────────────────────────────────────────
+
+c) ¿Por qué ocurre un StackOverflowError?
+
+RESPUESTA:
+
+Definición:
+StackOverflowError ocurre cuando la pila de ejecución (call stack) se agota.
+
+Mecánica:
+1. Cada llamada de función crea un "stack frame" en la pila
+2. El stack frame contiene:
+   - Variables locales
+   - Parámetros del método
+   - Dirección de retorno
+   - Típicamente: 100-200 bytes por frame
+
+3. La pila tiene tamaño limitado:
+   - Típicamente: 1 MB en Java
+   - Máximo de frames: 1 MB / 150 bytes ≈ 6,666 frames
+
+4. Cuando se excede el límite:
+   - La JVM no puede crear más frames
+   - Lanza StackOverflowError
+   - El programa (o el thread) se detiene
+
+Visualización:
+```
+Pila vacía:
+┌─────────────────────────┐
+│                         │
+│      [Espacio libre]    │
+│                         │
+└─────────────────────────┘
+
+Después de 6,000 inserciones:
+┌─────────────────────────┐
+│ Frame 6000              │
+├─────────────────────────┤
+│ Frame 5999              │
+├─────────────────────────┤
+│ Frame 5998              │
+├─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┤
+│ Frame 3                 │
+├─────────────────────────┤
+│ Frame 2                 │
+├─────────────────────────┤
+│ Frame 1 (main)          │
+└─────────────────────────┘
+
+Intentar crear Frame 6001:
+┌─────────────────────────┐
+│ [NO HAY ESPACIO]        │
+│ StackOverflowError!!!   │
+└─────────────────────────┘
+```
+
+Número estimado donde ocurre:
+- Con 50,000 inserciones ordenadas
+- Error típicamente entre 6,000 y 10,000
+- Depende del tamaño de cada stack frame
+- Depende de la configuración de la JVM (-Xss parámetro)
+
+
+───────────────────────────────────────────────────────────────────────────
+
+PREGUNTA: Implementar agregarIterativo y comparar
+
+RESPUESTA: Ver código en ABBEnterosImpl_COMPLETO.java
+
+Implementación:
+```java
+public void agregarIterativo(int valor) {
+    if (raiz == null) {
+        raiz = new Nodo(valor);
+        return;
+    }
+    
+    Nodo actual = raiz;
+    while (true) {
+        if (valor == actual.valor) return;
+        
+        if (valor < actual.valor) {
+            if (actual.izquierdo == null) {
+                actual.izquierdo = new Nodo(valor);
+                return;
+            }
+            actual = actual.izquierdo;
+        } else {
+            if (actual.derecho == null) {
+                actual.derecho = new Nodo(valor);
+                return;
+            }
+            actual = actual.derecho;
+        }
+    }
+}
+```
+
+COMPARACIÓN VENTAJAS/DESVENTAJAS:
+
+RECURSIVA:
+✓ Código más limpio (3 líneas)
+✓ Más intuitivo para comprender la lógica
+✓ Refleja la naturaleza recursiva del árbol
+✗ StackOverflowError con datos degenerados
+✗ Más lenta (overhead de llamadas)
+✗ Limite de profundidad
+
+ITERATIVA:
+✓ Sin StackOverflowError (sin límite de profundidad)
+✓ Más rápida (sin overhead de llamadas)
+✓ Más eficiente en memoria durante ejecución
+✓ Funciona con cualquier patrón de datos
+✗ Código más complejo (más líneas)
+✗ Menos intuitiva
+✗ Más variables para gestionar
+
+CONCLUSIÓN:
+Para aplicaciones críticas o datos potencialmente degenerados, usar ITERATIVA.
+Para código simple y legible con datos bien balanceados, puede usar RECURSIVA.
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 3: BÚSQUEDA
+====================
+
+PREGUNTA: Indicar Complejidad temporal en peor caso
+
+RESPUESTA:
+Complejidad Temporal Peor Caso: O(n)
+
+Explicación:
+El peor caso ocurre cuando el árbol es una lista degenerada.
+En este caso, se necesita comparar con cada nodo hasta encontrar el valor.
+
+Ejemplo:
+  Árbol: 1 → 2 → 3 → 4 → ... → n
+  Buscar: n
+  Comparaciones: n (una con cada elemento)
+
+
+PREGUNTA: Comparar búsqueda en ABB con búsqueda lineal y binaria
+
+RESPUESTA: Ver EJERCICIO_3_5_7_ANALISIS.txt
+
+Tabla resumen:
+┌────────────────────┬──────────┬───────────┬───────────┐
+│ Operación          │ ABB      │ Lineal    │ Binaria   │
+├────────────────────┼──────────┼───────────┼───────────┤
+│ Búsqueda (mejor)   │ O(1)     │ O(1)      │ O(1)      │
+│ Búsqueda (promedio)│ O(log n) │ O(n/2)    │ O(log n)  │
+│ Búsqueda (peor)    │ O(n)     │ O(n)      │ O(log n)  │
+├────────────────────┼──────────┼───────────┼───────────┤
+│ Inserción (promedio)│ O(log n)│ O(1)      │ O(n)      │
+│ Eliminación (prom.)│ O(log n)│ O(n/2)    │ O(n)      │
+└────────────────────┴──────────┴───────────┴───────────┘
+
+Para 1,000,000 elementos:
+- Búsqueda lineal: hasta 1,000,000 comparaciones
+- Búsqueda binaria: hasta 20 comparaciones
+- ABB balanceado: ~20 comparaciones
+- ABB degenerado: 1,000,000 comparaciones
+
+CONCLUSIÓN:
+ABB es mejor que lineal SIEMPRE.
+ABB es similar a binaria en búsqueda, pero MEJOR en inserción.
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 4: ESTADÍSTICAS DEL ÁRBOL
+===================================
+
+IMPLEMENTADAS:
+✓ int altura()
+✓ int cantidad()
+✓ int minimo()
+✓ int maximo()
+
+Todas están en ABBEnterosImpl_COMPLETO.java
+
+Notas:
+- minimo() y maximo() lanzan IllegalStateException si el árbol está vacío
+- altura() devuelve 0 para árbol vacío
+- cantidad() devuelve 0 para árbol vacío
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 5: RECORRIDOS
+=======================
+
+IMPLEMENTADAS:
+✓ void mostrarInOrden()
+✓ void mostrarPreOrden()
+✓ void mostrarPostOrden()
+
+PREGUNTA: ¿Qué particularidad observan en mostrarInOrden?
+
+RESPUESTA:
+El recorrido INORDEN imprime los valores en ORDEN ASCENDENTE.
+
+Esta es una propiedad fundamental del Árbol Binario de Búsqueda.
+
+Ejemplo:
+Árbol:        8
+             / \
+            3   10
+           / \
+          1   6
+             / \
+            4   7
+
+Inorden: 1, 3, 4, 6, 7, 8, 10
+         ↑
+         ORDEN ASCENDENTE
+
+¿Por qué?
+Porque en un ABB: izquierdo < nodo < derecho
+El inorden (izq, nodo, der) procesa primero los menores, luego el nodo, luego los mayores.
+
+PREGUNTA: Indicar complejidad temporal
+
+RESPUESTA:
+Complejidad Temporal: O(n)
+
+Explicación:
+Cada recorrido (inorden, preorden, postorden) visita cada nodo exactamente una vez.
+Por lo tanto, con n nodos, se ejecutan O(n) operaciones.
+
+Complejidad Espacial:
+- Recursiva: O(h) donde h es la altura
+  * Mejor: O(log n) - árbol balanceado
+  * Peor: O(n) - árbol degenerado
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 6: ELIMINACIÓN
+========================
+
+IMPLEMENTADA:
+✓ boolean eliminar(int valor)
+
+El algoritmo implementa los tres casos:
+
+Caso 1: Nodo es hoja
+  → Se elimina directamente (retorna null)
+
+Caso 2: Nodo tiene un hijo
+  → Se devuelve ese hijo (lo "sube")
+
+Caso 3: Nodo tiene dos hijos
+  → Se busca el mínimo del subárbol derecho (sucesor)
+  → Se reemplaza el valor del nodo por el sucesor
+  → Se elimina el sucesor del subárbol derecho
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 7: VALIDACIÓN DE RANGO
+================================
+
+IMPLEMENTADA:
+✓ boolean enRango(int desde, int hasta)
+
+Función:
+Verifica si TODOS los valores del árbol están en el rango [desde, hasta] (inclusivo).
+
+Retorna:
+- true si todos los valores están dentro del rango
+- false si algún valor está fuera del rango
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 8: CONJUNTO USANDO ABB
+================================
+
+IMPLEMENTADA:
+✓ Clase ConjuntoABB con operaciones:
+  - void agregar(int valor)
+  - boolean eliminar(int valor)
+  - boolean contiene(int valor)
+  - int cantidad()
+  - int elegir()
+  - ConjuntoABB interseccion(ConjuntoABB conjunto)
+
+Ver archivo: ConjuntoABB.java
+
+Características:
+- No permite duplicados (hereda del ABB)
+- interseccion() retorna nuevo ConjuntoABB con elementos comunes
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+EJERCICIO 9: ÍNDICE DE PALABRAS (DESAFÍO)
+==========================================
+
+IMPLEMENTADA:
+✓ Clase IndiceABB para contar apariciones de palabras
+
+Funcionalidades:
+- Procesa texto simple: procesarTexto(String texto)
+- Procesa archivos: procesarArchivo(String ruta)
+- Muestra resultados en orden alfabético (inorden)
+- Busca cantidad de apariciones: obtenerCantidad(String palabra)
+- Encuentra palabra más frecuente: palabraMasFrecuente()
+
+Ver archivo: IndiceABB.java
+
+Ejemplo de uso:
+```
+Entrada: "casa árbol casa río árbol árbol"
+Salida:
+  árbol -> 3
+  casa -> 2
+  río -> 1
+```
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+RESUMEN FINAL
+=============
+
+Ejercicio | Estado      | Archivo              | Notas
+1         | ✓ Completo | ABBEnterosImpl        | agregarRecursivo()
+2         | ✓ Completo | ABBEnterosImpl        | agregarIterativo() + análisis
+3         | ✓ Completo | ABBEnterosImpl        | contiene() + comparación
+4         | ✓ Completo | ABBEnterosImpl        | altura, cantidad, min, max
+5         | ✓ Completo | ABBEnterosImpl        | recorridos + particularidad
+6         | ✓ Completo | ABBEnterosImpl        | eliminar con 3 casos
+7         | ✓ Completo | ABBEnterosImpl        | enRango()
+8         | ✓ Completo | ConjuntoABB.java     | 6 operaciones + ejemplos
+9         | ✓ Completo | IndiceABB.java       | procesa archivos y textos
+
+Todos los ejercicios están completamente implementados y cuentan con:
+✓ Código funcional
+✓ Comentarios detallados
+✓ Análisis de complejidad
+✓ Ejemplos de uso
+✓ Tests de validación

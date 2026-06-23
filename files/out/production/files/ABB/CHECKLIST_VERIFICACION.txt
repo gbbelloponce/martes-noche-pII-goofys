@@ -1,0 +1,371 @@
+CHECKLIST DE VERIFICACIÓN - PRÁCTICA ÁRBOLES BINARIOS DE BÚSQUEDA
+================================================================
+
+Este documento permite verificar que TODA la solución ha sido correctamente
+implementada, documentada y probada.
+
+Marque cada ítem conforme lo complete.
+
+
+PARTE 1: DESCARGA Y ESTRUCTURA
+==============================
+
+□ Descargué ABBEnterosImpl_COMPLETO.java
+□ Descargué ConjuntoABB.java
+□ Descargué IndiceABB.java
+□ Descargué RESPUESTAS_PREGUNTAS.txt
+□ Descargué EJERCICIO_2_ANALISIS.txt
+□ Descargué EJERCICIO_3_5_7_ANALISIS.txt
+□ Descargué GUIA_COMPLETA.txt
+□ Descargué README.txt
+□ Tengo Texto.txt en la carpeta raíz (proporcionado)
+
+
+PARTE 2: INSTALACIÓN
+====================
+
+□ Copié ABBEnterosImpl_COMPLETO.java como ABBEnterosImpl.java en ABB/
+  (O copié el contenido al archivo original)
+
+□ Creé ConjuntoABB.java en el directorio ABB/
+  (Verificar que comience con: package ABB;)
+
+□ Creé IndiceABB.java en el directorio ABB/
+  (Verificar que comience con: package ABB;)
+
+□ Verifiqué que NO modifiqué:
+  - ABBEnteros.java (interfaz)
+  - ABBEnterosTest.java (tests)
+  - Nodo.java (clase nodo)
+  - TestRecursividadABB.java
+
+□ Verifiqué que Texto.txt está en la carpeta raíz del proyecto
+
+
+PARTE 3: COMPILACIÓN
+====================
+
+□ Abrir terminal/cmd en el directorio del proyecto
+
+□ Ejecutar: cd ABB
+
+□ Ejecutar: javac *.java
+
+□ ¿Hubo errores de compilación?
+  □ NO - Continuar al siguiente paso
+  □ SÍ - Ver sección "Troubleshooting" en GUIA_COMPLETA.txt
+
+□ Se generaron los archivos .class:
+  □ ABBEnterosImpl.class
+  □ ConjuntoABB.class
+  □ IndiceABB.java y sus archivos internos
+  □ (Verificar con: dir o ls)
+
+
+PARTE 4: TESTS DE EJERCICIOS 1-7
+================================
+
+Ejecutar desde el directorio raíz del proyecto:
+java ABB.ABBEnterosTest
+
+Verificar que aparecen estos mensajes (en este orden):
+□ "testArbolVacio OK"
+□ "testAgregarYContiene OK"
+□ "testCantidad OK"
+□ "testAltura OK"
+□ "testMinimoMaximo OK"
+□ "testEliminacionHoja OK"
+□ "testEliminacionUnHijo OK"
+□ "testEliminacionDosHijos OK"
+□ "testEliminacionRaiz OK"
+□ "testEliminacionInexistente OK"
+□ "testDuplicados OK"
+□ "TODOS LOS TESTS PASARON OK"
+
+Si aparece algo diferente → Revisar GUIA_COMPLETA.txt
+
+
+PARTE 5: PRUEBA DEL EJERCICIO 2
+===============================
+
+Ejecutar: java ABB.TestRecursividadABB
+
+Resultado esperado:
+□ CON ABBEnterosImpl (iterativa): "Fin del programa" (sin error)
+□ CON ABBEnterosImpl (recursiva original): "StackOverflow en profundidad: ~6000-10000"
+
+Nota: Esto demuestra la diferencia entre recursión e iteración
+
+
+PARTE 6: PRUEBA DEL EJERCICIO 8
+===============================
+
+Ejecutar: java ABB.ConjuntoABB
+
+Debe ver:
+□ "=== EJERCICIO 8: CONJUNTO USANDO ABB ==="
+□ Conjunto 1 con elementos
+□ Conjunto 2 con elementos
+□ Resultados de operaciones (cantidad, contiene, elegir)
+□ Resultado de la intersección
+□ Sin errores
+
+
+PARTE 7: PRUEBA DEL EJERCICIO 9
+===============================
+
+Ejecutar: java ABB.IndiceABB
+
+Debe ver:
+□ "=== EJERCICIO 9: ÍNDICE DE PALABRAS ==="
+□ Ejemplo 1: Texto simple
+□ Índice de ejemplo 1 (árbol, casa, río)
+□ Ejemplo 2: Texto extenso
+□ Índice ordenado alfabéticamente
+□ Palabra más frecuente identificada
+□ Ejemplo 3: Procesar archivo Texto.txt
+□ "Archivo 'Texto.txt' procesado correctamente"
+□ Índice del archivo (muchas palabras)
+□ Búsquedas específicas de apariciones
+
+
+PARTE 8: VERIFICACIÓN DE CÓDIGO
+================================
+
+Abrir ABBEnterosImpl_COMPLETO.java (o ABBEnterosImpl.java):
+
+□ ¿Contiene agregar()?
+  □ SÍ - ¿Es recursivo?
+  □ Contiene agregarRecursivo() privado
+
+□ ¿Contiene agregarIterativo()?
+  □ SÍ - ¿Usa bucles en lugar de recursión?
+
+□ ¿Contiene contiene()?
+  □ SÍ - ¿Es recursivo y usa contieneRecursivo()?
+
+□ ¿Contiene cantidad()?
+  □ SÍ - ¿Usa cantidadRecursivo()?
+
+□ ¿Contiene altura()?
+  □ SÍ - ¿Usa alturaRecursivo()?
+
+□ ¿Contiene minimo() y maximo()?
+  □ SÍ - ¿Lanzan IllegalStateException si el árbol está vacío?
+
+□ ¿Contiene mostrarInOrden(), mostrarPreOrden(), mostrarPostOrden()?
+  □ SÍ - ¿Son recursivos?
+
+□ ¿Contiene eliminar()?
+  □ SÍ - ¿Implementa los 3 casos (hoja, un hijo, dos hijos)?
+
+□ ¿Contiene enRango()?
+  □ SÍ - ¿Valida que todos los nodos estén en rango?
+
+Abrir ConjuntoABB.java:
+
+□ ¿Contiene la clase ConjuntoABB?
+□ ¿Tiene agregar()?
+□ ¿Tiene eliminar()?
+□ ¿Tiene contiene()?
+□ ¿Tiene cantidad()?
+□ ¿Tiene elegir()?
+□ ¿Tiene interseccion()?
+□ ¿Tiene método main() con ejemplos?
+
+Abrir IndiceABB.java:
+
+□ ¿Contiene la clase IndiceABB?
+□ ¿Tiene procesarTexto()?
+□ ¿Tiene procesarArchivo()?
+□ ¿Tiene mostrarIndice()?
+□ ¿Tiene obtenerCantidad()?
+□ ¿Tiene palabraMasFrecuente()?
+□ ¿Tiene método main() con ejemplos?
+□ ¿Tiene clase interna NodoPalabra?
+
+
+PARTE 9: VERIFICACIÓN DE DOCUMENTACIÓN
+======================================
+
+RESPUESTAS_PREGUNTAS.txt:
+□ ¿Responde Exercise 1 - Complejidad?
+□ ¿Responde Ejercicio 2.a - ¿Qué hace main()?
+□ ¿Responde Ejercicio 2.b - Problemática?
+□ ¿Responde Ejercicio 2.c - StackOverflow?
+□ ¿Compara agregarRecursiva() vs agregarIterativa()?
+□ ¿Responde Ejercicio 3 - Complejidad?
+□ ¿Compara ABB vs Lineal vs Binaria?
+□ ¿Responde Ejercicios 4-9?
+
+EJERCICIO_2_ANALISIS.txt:
+□ ¿Explica qué hace TestRecursividadABB?
+□ ¿Explica la problemática?
+□ ¿Explica StackOverflowError en detalle?
+□ ¿Visualiza la pila?
+□ ¿Compara recursiva vs iterativa?
+□ ¿Tiene conclusiones?
+
+EJERCICIO_3_5_7_ANALISIS.txt:
+□ ¿Analiza Ejercicio 3 (búsqueda)?
+□ ¿Tiene tabla de comparación (ABB vs Lineal vs Binaria)?
+□ ¿Analiza Ejercicio 5 (recorridos)?
+□ ¿Explica la particularidad de inorden?
+□ ¿Analiza Ejercicio 7 (rango)?
+
+GUIA_COMPLETA.txt:
+□ ¿Tiene instrucciones de instalación?
+□ ¿Tiene instrucciones de compilación?
+□ ¿Tiene instrucciones de ejecución?
+□ ¿Tiene 5 ejemplos de código?
+□ ¿Tiene sección troubleshooting?
+□ ¿Tiene referencias?
+
+
+PARTE 10: VALIDACIÓN FUNCIONAL
+==============================
+
+Crear un programa de prueba simple:
+
+```java
+import ABB.*;
+
+public class Prueba {
+    public static void main(String[] args) {
+        // Ejercicio 1-7: ABB
+        ABBEnteros abb = new ABBEnterosImpl();
+        abb.agregar(5);
+        abb.agregar(3);
+        abb.agregar(7);
+        
+        assert abb.contiene(5);       // ✓
+        assert !abb.contiene(99);     // ✓
+        assert abb.cantidad() == 3;   // ✓
+        
+        System.out.println("Ejercicio 1-7: ✓ PASS");
+        
+        // Ejercicio 8: Conjunto
+        ConjuntoABB c = new ConjuntoABB();
+        c.agregar(5);
+        assert c.contiene(5);         // ✓
+        
+        System.out.println("Ejercicio 8: ✓ PASS");
+        
+        // Ejercicio 9: Índice
+        IndiceABB indice = new IndiceABB();
+        indice.procesarTexto("hola hola mundo");
+        assert indice.obtenerCantidad("hola") == 2;  // ✓
+        
+        System.out.println("Ejercicio 9: ✓ PASS");
+        
+        System.out.println("\n✓ TODOS LOS EJERCICIOS FUNCIONAN");
+    }
+}
+```
+
+□ Compilar: javac -cp ABB/ Prueba.java
+□ Ejecutar: java -cp .:ABB Prueba
+□ ¿Muestra "TODOS LOS EJERCICIOS FUNCIONAN"?
+
+
+PARTE 11: REVISIÓN FINAL
+=========================
+
+□ He leído README.txt completamente
+□ He leído RESPUESTAS_PREGUNTAS.txt
+□ He entendido el Ejercicio 2 (StackOverflow)
+□ He entendido el Ejercicio 3 (Búsqueda)
+□ He revisado todos los comentarios en el código
+□ He ejecutado todos los tests sin errores
+□ Tengo una copia de seguridad de los archivos
+
+□ Verificué que no modifiqué archivos que no debía
+□ Verificué que creé archivos nuevos correctamente
+□ Verificué que el paquete es "ABB" en todos lados
+□ Verificué que no hay imports innecesarios
+□ Verificué que no hay código comentado innecesariamente
+
+
+PARTE 12: RESPUESTA A PREGUNTAS CLAVES
+=======================================
+
+Responde estas preguntas (respuestas están en los documentos):
+
+□ ¿Cuál es la complejidad de agregar en peor caso?
+   R: O(n) - cuando el árbol es una lista degenerada
+
+□ ¿Por qué ocurre StackOverflow con 50,000 elementos ordenados?
+   R: Porque la implementación recursiva crea 50,000 frames en la pila
+      y la pila solo soporta ~10,000
+
+□ ¿Cuántas comparaciones necesita búsqueda lineal en 1,000,000 elementos?
+   R: Hasta 1,000,000 (caso peor)
+
+□ ¿Cuántas comparaciones necesita ABB en 1,000,000 elementos balanceado?
+   R: Hasta ~20 (log₂(1,000,000))
+
+□ ¿Qué particularidad tiene el recorrido inorden en un ABB?
+   R: Imprime los valores en orden ascendente
+
+□ ¿Cuál es la complejidad de un recorrido?
+   R: O(n) - visita cada nodo una vez
+
+□ ¿Cómo se elimina un nodo con dos hijos?
+   R: Se reemplaza por el mínimo del subárbol derecho
+
+□ ¿Qué operaciones permite un conjunto?
+   R: agregar, eliminar, contiene, cantidad, elegir, interseccion
+
+
+CHECKLIST FINAL
+===============
+
+□ Todos los archivos descargados
+□ Todos los archivos copiados/creados correctamente
+□ Código compila sin errores
+□ Todos los tests pasan (11/11)
+□ Ejercicio 8 ejecuta correctamente
+□ Ejercicio 9 ejecuta correctamente
+□ Documentación completa y entendida
+□ Preguntas clave respondidas correctamente
+□ Código comentado apropiadamente
+□ Sin errores de compilación ni ejecución
+□ Listo para entregar
+
+
+PROBLEMAS ENCONTRADOS Y SOLUCIONES
+===================================
+
+Problema: "error: package ABB does not exist"
+Solución:
+  - Los .java deben estar en carpeta ABB/
+  - Compilar con: cd ABB && javac *.java
+
+Problema: "FileNotFoundException: Texto.txt"
+Solución:
+  - Asegurarse que Texto.txt está en raíz del proyecto
+  - O especificar ruta completa en procesarArchivo()
+
+Problema: "StackOverflowError al ejecutar TestRecursividadABB"
+Solución:
+  - Esto es NORMAL con agregarRecursivo()
+  - La solución usa agregarIterativo() que NO tiene este problema
+
+Problema: Tests no compilan
+Solución:
+  - No modificar ABBEnterosTest.java
+  - Verificar que ABBEnterosImpl.java esté en ABB/
+
+Problema: ConjuntoABB no compila
+Solución:
+  - Verificar que comienza con: package ABB;
+  - Verificar que implementa correctamente
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+Si marcó todos los cuadros ✓, entonces la solución está completa y lista.
+
+¡ÉXITO EN LA ENTREGA!
+
+═════════════════════════════════════════════════════════════════════════════

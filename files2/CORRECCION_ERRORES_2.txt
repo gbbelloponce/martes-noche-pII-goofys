@@ -1,0 +1,214 @@
+GUÍA DE CORRECCIÓN - ERRORES DE COMPILACIÓN
+============================================
+
+PROBLEMA 1: "class ABBEnterosImpl is public, should be declared in a file named ABBEnterosImpl.java"
+═══════════════════════════════════════════════════════════════════════════════════════════════
+
+CAUSA:
+El archivo se llama "ABBEnterosImpl_COMPLETO.java" pero contiene "public class ABBEnterosImpl"
+Java exige que si una clase es public, el archivo debe tener exactamente ese nombre.
+
+SOLUCIONES (elige una):
+
+OPCIÓN A: Renombrar el archivo (RECOMENDADO)
+────────────────────────────────────────────
+1. Busca: ABBEnterosImpl_COMPLETO.java
+2. Renómbralo a: ABBEnterosImpl.java
+3. Reemplaza el archivo original en tu proyecto ABB/
+4. Compila nuevamente: javac *.java
+
+OPCIÓN B: Quitar "public" del archivo actual (ya hecho ✓)
+──────────────────────────────────────────────────────────
+El archivo ya ha sido corregido:
+- Cambio: public class ABBEnterosImpl → class ABBEnterosImpl
+- Ahora puede usar cualquier nombre de archivo
+- Recuerda descargar la versión corregida
+
+
+PROBLEMA 2: "cd : No se encuentra la ruta de acceso"
+═════════════════════════════════════════════════════
+
+CAUSA:
+Estás en C:\Users\augus\OneDrive\Desktop\ pero intenta entrar a carpeta ABB que no existe.
+
+SOLUCIÓN:
+Primero verifica la estructura:
+
+1. Navega a la carpeta correcta:
+   cd Desktop
+   dir
+
+2. Verifica que exista la carpeta ABB:
+   Si no existe, créala:
+   mkdir ABB
+
+3. Copia todos los archivos .java a esa carpeta:
+   - ABBEnteros.java
+   - Nodo.java
+   - ABBEnterosTest.java
+   - ABBEnterosImpl.java (o renombra _COMPLETO)
+   - ConjuntoABB.java
+   - IndiceABB.java
+   - TestRecursividadABB.java
+
+4. Ahora sí, entra a la carpeta:
+   cd ABB
+
+5. Compila desde ahí:
+   javac *.java
+
+
+PROBLEMA 3: "Note: IndiceABB.java uses or overrides a deprecated API"
+══════════════════════════════════════════════════════════════════════
+
+CAUSA:
+El método FileReader() está deprecado en versiones recientes de Java.
+
+SOLUCIÓN:
+No es un error, solo una advertencia. Puedes ignorarla o actualizar el código.
+
+Para IGNORAR (rápido):
+  javac -Xlint:deprecation *.java
+
+Para ACTUALIZAR (mejor):
+Cambiar en IndiceABB.java línea ~130:
+  
+ACTUAL:
+  try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+
+MEJOR:
+  try (BufferedReader br = new BufferedReader(
+           new InputStreamReader(
+               new FileInputStream(rutaArchivo), 
+               StandardCharsets.UTF_8))) {
+
+Agregar al inicio:
+  import java.nio.charset.StandardCharsets;
+  import java.io.FileInputStream;
+  import java.io.InputStreamReader;
+
+
+PROBLEMA 4: "Error: Could not find or load main class ABB.ABBEnterosTest"
+═════════════════════════════════════════════════════════════════════════
+
+CAUSA:
+Intentas ejecutar desde la carpeta ABB, pero Java no encuentra el paquete correctamente.
+
+SOLUCIÓN:
+Vuelve a la carpeta PADRE y ejecuta desde ahí:
+
+  cd ..
+  java ABB.ABBEnterosTest
+
+
+PASOS CORRECTOS DE PRINCIPIO A FIN
+═══════════════════════════════════════════════════════════════════════════
+
+1. Crea la carpeta:
+   mkdir ABB
+   cd ABB
+
+2. Copia TODOS estos archivos a la carpeta ABB:
+   - ABBEnteros.java (proporcionado)
+   - Nodo.java (proporcionado)
+   - ABBEnterosTest.java (proporcionado)
+   - ABBEnterosImpl.java (tu copia de ABBEnterosImpl_COMPLETO.java)
+   - ConjuntoABB.java (nuevo)
+   - IndiceABB.java (nuevo)
+   - TestRecursividadABB.java (proporcionado)
+
+3. Compila DESDE la carpeta ABB:
+   javac *.java
+
+   ✓ Debe compilar sin errores
+
+4. Vuelve a la carpeta padre:
+   cd ..
+
+5. Ejecuta los tests:
+   java ABB.ABBEnterosTest
+   java ABB.ConjuntoABB
+   java ABB.IndiceABB
+
+6. Para procesar archivo Texto.txt:
+   Asegúrate de que Texto.txt esté en la carpeta PADRE (no en ABB/)
+
+
+CHECKLIST DE VERIFICACIÓN
+═════════════════════════════════════════════════════════════════════════════
+
+□ Carpeta ABB existe
+□ Todos los 7 archivos .java están en ABB/
+□ Renombré ABBEnterosImpl_COMPLETO.java a ABBEnterosImpl.java
+□ Compilé con: cd ABB && javac *.java
+□ Compilación exitosa (sin errores, solo warnings de deprecated)
+□ Volví a carpeta padre: cd ..
+□ Ejecuté: java ABB.ABBEnterosTest
+□ Salida: "TODOS LOS TESTS PASARON OK"
+□ Ejecuté: java ABB.ConjuntoABB (sin errores)
+□ Ejecuté: java ABB.IndiceABB (sin errores)
+
+Si todos están marcados ✓, ¡YA FUNCIONA TODO!
+
+
+COMANDO RÁPIDO (copiar y pegar)
+═══════════════════════════════════════════════════════════════════════════
+
+Windows (PowerShell):
+mkdir ABB
+cd ABB
+Copy-Item ..\ABBEnteros.java .
+Copy-Item ..\Nodo.java .
+Copy-Item ..\ABBEnterosTest.java .
+Copy-Item ..\ABBEnterosImpl_COMPLETO.java ABBEnterosImpl.java
+Copy-Item ..\ConjuntoABB.java .
+Copy-Item ..\IndiceABB.java .
+Copy-Item ..\TestRecursividadABB.java .
+javac *.java
+cd ..
+java ABB.ABBEnterosTest
+
+Linux/Mac:
+mkdir ABB
+cd ABB
+cp ../ABBEnteros.java .
+cp ../Nodo.java .
+cp ../ABBEnterosTest.java .
+cp ../ABBEnterosImpl_COMPLETO.java ABBEnterosImpl.java
+cp ../ConjuntoABB.java .
+cp ../IndiceABB.java .
+cp ../TestRecursividadABB.java .
+javac *.java
+cd ..
+java ABB.ABBEnterosTest
+
+
+PROBLEMAS ADICIONALES
+════════════════════════════════════════════════════════════════════════════
+
+Si aparece: "javac is not recognized as an internal or external command"
+→ Java no está instalado o no está en PATH
+→ Instala Java JDK desde oracle.com o microsoft.com
+
+Si aparece: "FileNotFoundException: Texto.txt"
+→ El archivo debe estar en la carpeta PADRE, no en ABB/
+→ Copia Texto.txt a la carpeta raíz del proyecto
+
+Si aparece: "StackOverflowError" en TestRecursividadABB
+→ Es NORMAL con la implementación recursiva
+→ La solución incluye agregarIterativo() que NO tiene este problema
+
+Si la compilación es lenta:
+→ Cierra el IDE y compila desde línea de comandos
+→ Usa: javac *.java (desde dentro de carpeta ABB/)
+
+
+SOPORTE
+════════════════════════════════════════════════════════════════════════════
+
+Si tienes dudas:
+1. Revisa GUIA_COMPLETA.txt - Sección Troubleshooting
+2. Revisa este documento (CORRECCION_ERRORES.txt)
+3. Revisa README.txt - Estructura del proyecto
+
+¡Cualquier pregunta, revisa primero la documentación!

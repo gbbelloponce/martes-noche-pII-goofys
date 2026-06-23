@@ -1,0 +1,252 @@
+GUÍA PASO-A-PASO - CÓMO COMPILAR Y EJECUTAR
+=============================================
+
+Esta es la forma más simple y que definitivamente funciona.
+
+
+PASO 1: CREAR CARPETA
+═════════════════════
+
+Abre PowerShell y escribe:
+
+mkdir ABB
+
+Presiona ENTER
+
+Resultado: Se crea una carpeta llamada "ABB" en tu ubicación actual
+
+
+PASO 2: ENTRAR A LA CARPETA
+═══════════════════════════
+
+Escribe:
+
+cd ABB
+
+Presiona ENTER
+
+Deberías ver en PowerShell: PS C:\...\ABB>
+
+
+PASO 3: COPIAR ARCHIVOS
+═══════════════════════
+
+Debes tener estos archivos .java en la carpeta ABB/:
+
+1. ABBEnteros.java (de los archivos originales)
+2. Nodo.java (de los archivos originales)
+3. ABBEnterosTest.java (de los archivos originales)
+4. TestRecursividadABB.java (de los archivos originales)
+5. ABBEnterosImpl.java (que es ABBEnterosImpl_COMPLETO.java renombrado)
+6. ConjuntoABB.java (el nuevo que descargaste)
+7. IndiceABB.java (el nuevo que descargaste)
+
+Si usas explorador de archivos:
+- Click derecho en la carpeta ABB
+- Pegar todos los archivos .java aquí
+
+Si usas PowerShell (desde una carpeta superior):
+copy ABBEnteros.java ABB/
+copy Nodo.java ABB/
+copy ABBEnterosTest.java ABB/
+copy TestRecursividadABB.java ABB/
+copy ABBEnterosImpl_COMPLETO.java ABB/ABBEnterosImpl.java
+copy ConjuntoABB.java ABB/
+copy IndiceABB.java ABB/
+
+
+PASO 4: VERIFICAR ARCHIVOS
+══════════════════════════
+
+Desde PowerShell (dentro de la carpeta ABB), escribe:
+
+dir
+
+Deberías ver estos archivos:
+- ABBEnteros.java
+- Nodo.java
+- ABBEnterosTest.java
+- TestRecursividadABB.java
+- ABBEnterosImpl.java
+- ConjuntoABB.java
+- IndiceABB.java
+
+Si no los ves todos, vuelve al PASO 3
+
+
+PASO 5: COMPILAR
+════════════════
+
+Desde PowerShell (dentro de la carpeta ABB), escribe:
+
+javac *.java
+
+Presiona ENTER
+
+Espera a que termine...
+
+
+✓ SI VES ESTO:
+  PS C:\...\ABB>
+  (Ningún error, vuelve el prompt)
+  
+  → ÉXITO: Compilación correcta
+  → Ve al PASO 6
+
+❌ SI VES ESTO:
+  error: class ABBEnterosImpl is public...
+  
+  → Renombra ABBEnterosImpl_COMPLETO.java a ABBEnterosImpl.java
+  → Intenta nuevamente: javac *.java
+
+❌ SI VES ESTO:
+  Note: IndiceABB.java uses or overrides a deprecated API...
+  
+  → Es NORMAL (solo una advertencia)
+  → Si ves "1 error" es diferente, busca arriba
+
+
+PASO 6: SALIR DE LA CARPETA
+════════════════════════════
+
+Escribe:
+
+cd ..
+
+Presiona ENTER
+
+Ahora deberías estar en la carpeta PADRE de ABB
+
+
+PASO 7: EJECUTAR TESTS
+══════════════════════
+
+Escribe:
+
+java ABB.ABBEnterosTest
+
+Presiona ENTER
+
+Espera...
+
+✓ SI VES ESTO:
+  testArbolVacio OK
+  testAgregarYContiene OK
+  testCantidad OK
+  testAltura OK
+  testMinimoMaximo OK
+  testEliminacionHoja OK
+  testEliminacionUnHijo OK
+  testEliminacionDosHijos OK
+  testEliminacionRaiz OK
+  testEliminacionInexistente OK
+  testDuplicados OK
+  
+  TODOS LOS TESTS PASARON OK
+  
+  → ¡¡¡ ÉXITO !!! Todo funciona correctamente
+
+❌ SI VES ESTO:
+  Error: Could not find or load main class ABB.ABBEnterosTest
+  
+  → Verifica estar en la carpeta PADRE (cd ..)
+  → Verifica que ABBEnterosTest.java esté en ABB/
+  → Intenta nuevamente
+
+
+PASO 8: EJECUTAR EJERCICIO 8 (Conjunto)
+════════════════════════════════════════
+
+Escribe:
+
+java ABB.ConjuntoABB
+
+Presiona ENTER
+
+✓ Deberías ver la salida del programa (elementos de conjuntos, intersección, etc.)
+
+
+PASO 9: EJECUTAR EJERCICIO 9 (Índice de palabras)
+═════════════════════════════════════════════════
+
+Escribe:
+
+java ABB.IndiceABB
+
+Presiona ENTER
+
+✓ Deberías ver la salida del programa (índices de palabras)
+
+Nota: Si Texto.txt no está en la carpeta PADRE, verá error FileNotFoundException
+       Para que funcione: copia Texto.txt a la raíz del proyecto (donde está ABB/)
+
+
+RESUMEN DE COMANDOS (copiar y pegar)
+════════════════════════════════════
+
+Desde PowerShell:
+
+mkdir ABB
+cd ABB
+# (copiar los 7 archivos .java aquí)
+javac *.java
+cd ..
+java ABB.ABBEnterosTest
+java ABB.ConjuntoABB
+java ABB.IndiceABB
+
+
+ERRORES COMUNES Y SOLUCIONES
+════════════════════════════
+
+ERROR: "javac: command not found" o "no se reconoce javac"
+SOLUCIÓN:
+  - Java no está instalado
+  - O no está en PATH
+  - Instala Java JDK desde:
+    * https://www.oracle.com/java/technologies/downloads/
+    * O usa Windows Terminal (más fácil)
+
+ERROR: "error: class ABBEnterosImpl is public..."
+SOLUCIÓN:
+  - Renombra ABBEnterosImpl_COMPLETO.java a ABBEnterosImpl.java
+  - Intenta: javac *.java nuevamente
+
+ERROR: "Error: Could not find or load main class"
+SOLUCIÓN:
+  - Asegúrate de estar en la carpeta PADRE (cd ..)
+  - Verifica que ABB/ existe con cd ABB (debe funcionar)
+  - Verifica que los .java están en ABB/
+
+ERROR: "FileNotFoundException: Texto.txt"
+SOLUCIÓN:
+  - Copia Texto.txt a la carpeta PADRE del proyecto
+  - No en ABB/, en la carpeta donde está ABB/
+
+ERROR: "StackOverflowError" en TestRecursividadABB
+SOLUCIÓN:
+  - Es NORMAL con agregarRecursivo()
+  - Los tests usan agregarIterativo() que NO tiene este problema
+  - Esto demuestra la diferencia entre recursión e iteración
+
+
+VERIFICACIÓN FINAL
+══════════════════
+
+Después de hacer todo esto:
+
+✓ Carpeta ABB existe
+✓ 7 archivos .java están en ABB/
+✓ javac *.java compiló sin errores
+✓ java ABB.ABBEnterosTest mostró 11 PASS
+✓ java ABB.ConjuntoABB ejecutó correctamente
+✓ java ABB.IndiceABB ejecutó correctamente
+
+Si todo esto ✓, ¡YA ESTÁ TODO FUNCIONANDO!
+
+Ahora puedes:
+1. Entregar la solución al profesor
+2. Revisar la documentación (RESPUESTAS_PREGUNTAS.txt, etc.)
+3. Entender cómo funciona todo
+
+¡ÉXITO! 🎉

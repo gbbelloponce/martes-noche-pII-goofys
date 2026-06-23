@@ -1,0 +1,450 @@
+GUÍA COMPLETA - PRÁCTICA DE ÁRBOLES BINARIOS DE BÚSQUEDA
+========================================================
+
+CONTENIDO DE LA SOLUCIÓN:
+=========================
+
+Archivos de implementación:
+  1. ABBEnterosImpl_COMPLETO.java
+     - Implementación completa de ABBEnteros
+     - Contiene Ejercicios 1-7
+     - Todos los métodos comentados con análisis de complejidad
+
+  2. ConjuntoABB.java
+     - Ejercicio 8: Implementación de Conjunto usando ABB
+     - Operaciones: agregar, eliminar, contiene, cantidad, elegir, interseccion
+     - Incluye main() con ejemplos de uso
+
+  3. IndiceABB.java
+     - Ejercicio 9: Índice de palabras (desafío)
+     - Cuenta apariciones de palabras en un texto
+     - Procesa archivos y textos
+     - Muestra resultados en orden alfabético
+
+Documentos de análisis:
+  4. EJERCICIO_2_ANALISIS.txt
+     - Análisis detallado del StackOverflowError
+     - Comparación recursión vs iteración
+     - Ventajas y desventajas de cada enfoque
+
+  5. EJERCICIO_3_5_7_ANALISIS.txt
+     - Análisis de complejidad (Ejercicios 3, 5, 7)
+     - Comparación ABB vs búsqueda lineal vs binaria
+     - Recorridos y sus propiedades
+     - Validación de rango
+
+  6. GUIA_COMPLETA.txt (este archivo)
+     - Instrucciones de uso
+     - Estructura del proyecto
+     - Cómo ejecutar
+
+
+ESTRUCTURA DEL PROYECTO:
+========================
+
+ABB/
+├── Nodo.java                          [PROPORCIONADO]
+├── ABBEnteros.java                    [PROPORCIONADO - Interfaz]
+├── ABBEnterosImpl.java                 [PROPORCIONADO - Incompleto]
+├── ABBEnterosTest.java                [PROPORCIONADO - Tests]
+├── TestRecursividadABB.java           [PROPORCIONADO]
+├── Texto.txt                          [PROPORCIONADO - Para Ejercicio 9]
+│
+└── [SOLUCIONES]
+    ├── ABBEnterosImpl_COMPLETO.java    [REEMPLAZAR ABBEnterosImpl.java]
+    ├── ConjuntoABB.java               [NUEVO]
+    └── IndiceABB.java                 [NUEVO]
+
+
+INSTALACIÓN Y CONFIGURACIÓN:
+=============================
+
+1. REEMPLAZAR ARCHIVOS:
+   - Copiar ABBEnterosImpl_COMPLETO.java
+   - Renombrarlo a ABBEnterosImpl.java (reemplazando el original)
+   - O copiar todo el contenido al archivo original
+
+2. CREAR NUEVOS ARCHIVOS:
+   - Crear ConjuntoABB.java en el directorio ABB/
+   - Crear IndiceABB.java en el directorio ABB/
+   - Copiar el contenido respectivo de los archivos proporcionados
+
+3. COPIAR ARCHIVOS DE RECURSOS:
+   - Asegurarse de tener Texto.txt en la carpeta raíz del proyecto
+   - Este archivo es necesario para Ejercicio 9
+
+
+COMPILACIÓN:
+=============
+
+Opción 1: Compilar desde línea de comandos
+
+```bash
+# Compilar todos los archivos del paquete ABB
+cd ABB
+javac *.java
+
+# Resultado: se generan .class para cada .java
+```
+
+Opción 2: En un IDE (Eclipse, IntelliJ, NetBeans)
+
+```
+1. Click derecho en el proyecto
+2. Build Project (o Build All)
+3. El IDE compila automáticamente
+```
+
+Opción 3: Compilar selectivamente
+
+```bash
+javac ABB/ABBEnterosImpl.java    # Solo esta clase
+javac ABB/ConjuntoABB.java
+javac ABB/IndiceABB.java
+```
+
+
+EJECUCIÓN:
+===========
+
+Para cada parte de la práctica:
+
+─────────────────────────────────────
+EJERCICIOS 1-7: Tests de ABBEnterosImpl
+─────────────────────────────────────
+
+```bash
+# Desde el directorio raíz del proyecto:
+java ABB.ABBEnterosTest
+
+# Salida esperada:
+# testArbolVacio OK
+# testAgregarYContiene OK
+# testCantidad OK
+# testAltura OK
+# testMinimoMaximo OK
+# testEliminacionHoja OK
+# testEliminacionUnHijo OK
+# testEliminacionDosHijos OK
+# testEliminacionRaiz OK
+# testEliminacionInexistente OK
+# testDuplicados OK
+# 
+# TODOS LOS TESTS PASARON OK
+```
+
+─────────────────────────────────────
+EJERCICIO 2: Análisis de Recursión
+─────────────────────────────────────
+
+```bash
+java ABB.TestRecursividadABB
+
+# Salida esperada (con implementación iterativa):
+# (sin StackOverflowError)
+# Fin del programa
+
+# Salida esperada (con implementación recursiva):
+# StackOverflow en profundidad: 6000  (aproximadamente)
+# Fin del programa
+```
+
+─────────────────────────────────────
+EJERCICIO 8: Conjunto usando ABB
+─────────────────────────────────────
+
+```bash
+java ABB.ConjuntoABB
+
+# Salida esperada:
+# === EJERCICIO 8: CONJUNTO USANDO ABB ===
+# 
+# Agregando elementos al Conjunto 1:
+# 5 3 7 1 4 6 8
+# Conjunto 1: {1, 3, 4, 5, 6, 7, 8}
+# 
+# Agregando elementos al Conjunto 2:
+# 4 6 8 2 5 9
+# Conjunto 2: {2, 4, 5, 6, 8, 9}
+# 
+# --- Operaciones Básicas ---
+# Cantidad en Conjunto 1: 7
+# Contiene 4 en Conjunto 1: true
+# Contiene 10 en Conjunto 1: false
+# Elegir elemento de Conjunto 1: 1
+# 
+# Eliminando 4 de Conjunto 1...
+# Conjunto 1 después de eliminar 4: {1, 3, 5, 6, 7, 8}
+# 
+# --- Intersección ---
+# Intersección (Conjunto 1 ∩ Conjunto 2): {5, 6, 8}
+# Cantidad en intersección: 3
+```
+
+─────────────────────────────────────
+EJERCICIO 9: Índice de Palabras
+─────────────────────────────────────
+
+```bash
+java ABB.IndiceABB
+
+# Salida esperada:
+# === EJERCICIO 9: ÍNDICE DE PALABRAS ===
+# 
+# --- Ejemplo 1: Texto Simple ---
+# Texto: "casa árbol casa río árbol árbol"
+# 
+# === ÍNDICE DE PALABRAS ===
+# árbol -> 3
+# casa -> 2
+# río -> 1
+# 
+# Total de palabras distintas: 3
+# Total de palabras (con repeticiones): 6
+# 
+# --- Ejemplo 2: Texto Extenso ---
+# Texto: "el gato persigue al ratón. el ratón corre rápido..."
+# 
+# === ÍNDICE DE PALABRAS ===
+# al -> 1
+# corre -> 1
+# el -> 4
+# gato -> 2
+# persigue -> 1
+# rápido -> 2
+# ratón -> 2
+# y -> 1
+# 
+# Total de palabras distintas: 8
+# Total de palabras (con repeticiones): 14
+# 
+# Palabra más frecuente: el
+# ...
+```
+
+
+EJEMPLOS DE USO:
+================
+
+EJEMPLO 1: Crear un ABB simple
+──────────────────────────────
+
+```java
+import ABB.*;
+
+public class Ejemplo1 {
+    public static void main(String[] args) {
+        // Crear el árbol
+        ABBEnteros abb = new ABBEnterosImpl();
+        
+        // Agregar elementos
+        int[] valores = {50, 30, 70, 20, 40, 60, 80};
+        for (int v : valores) {
+            abb.agregar(v);
+        }
+        
+        // Búsquedas
+        System.out.println("¿Contiene 40? " + abb.contiene(40)); // true
+        System.out.println("¿Contiene 99? " + abb.contiene(99)); // false
+        
+        // Estadísticas
+        System.out.println("Cantidad: " + abb.cantidad());       // 7
+        System.out.println("Altura: " + abb.altura());          // 3
+        System.out.println("Mínimo: " + abb.minimo());          // 20
+        System.out.println("Máximo: " + abb.maximo());          // 80
+        
+        // Recorridos
+        System.out.print("Inorden: ");
+        abb.mostrarInOrden();  // 20 30 40 50 60 70 80
+        
+        // Eliminar
+        abb.eliminar(40);
+        System.out.println("Después de eliminar 40:");
+        abb.mostrarInOrden();  // 20 30 50 60 70 80
+    }
+}
+```
+
+EJEMPLO 2: Validar rango
+────────────────────────
+
+```java
+import ABB.*;
+
+public class Ejemplo2 {
+    public static void main(String[] args) {
+        ABBEnterosImpl abb = new ABBEnterosImpl();
+        
+        // Crear árbol con valores 1-10
+        for (int i = 1; i <= 10; i++) {
+            abb.agregar(i);
+        }
+        
+        // Validar rangos
+        System.out.println("¿En rango [1, 10]? " + abb.enRango(1, 10));   // true
+        System.out.println("¿En rango [1, 8]? " + abb.enRango(1, 8));     // false
+        System.out.println("¿En rango [5, 10]? " + abb.enRango(5, 10));   // false
+        System.out.println("¿En rango [0, 20]? " + abb.enRango(0, 20));   // true
+    }
+}
+```
+
+EJEMPLO 3: Usar agregar iterativo
+──────────────────────────────────
+
+```java
+import ABB.*;
+
+public class Ejemplo3 {
+    public static void main(String[] args) {
+        ABBEnterosImpl abb = new ABBEnterosImpl();
+        
+        // Agregar 50,000 elementos sin StackOverflow
+        for (int i = 1; i <= 50000; i++) {
+            abb.agregarIterativo(i);
+        }
+        
+        System.out.println("Agregados 50,000 elementos sin error");
+        System.out.println("Cantidad: " + abb.cantidad());
+        System.out.println("Altura: " + abb.altura());
+    }
+}
+```
+
+EJEMPLO 4: Operaciones con conjunto
+────────────────────────────────────
+
+```java
+import ABB.*;
+
+public class Ejemplo4 {
+    public static void main(String[] args) {
+        // Crear conjuntos
+        ConjuntoABB a = new ConjuntoABB();
+        ConjuntoABB b = new ConjuntoABB();
+        
+        // Elementos de A: {1, 2, 3, 4, 5}
+        for (int i = 1; i <= 5; i++) a.agregar(i);
+        
+        // Elementos de B: {3, 4, 5, 6, 7}
+        for (int i = 3; i <= 7; i++) b.agregar(i);
+        
+        System.out.println("Conjunto A: " + a.toString());  // {1, 2, 3, 4, 5}
+        System.out.println("Conjunto B: " + b.toString());  // {3, 4, 5, 6, 7}
+        
+        // Intersección
+        ConjuntoABB c = a.interseccion(b);
+        System.out.println("A ∩ B: " + c.toString());        // {3, 4, 5}
+        
+        // Operaciones
+        a.eliminar(2);
+        System.out.println("Después de eliminar 2 de A: " + a.toString());
+        System.out.println("¿A contiene 3? " + a.contiene(3));
+    }
+}
+```
+
+EJEMPLO 5: Índice de palabras
+──────────────────────────────
+
+```java
+import ABB.*;
+
+public class Ejemplo5 {
+    public static void main(String[] args) {
+        IndiceABB indice = new IndiceABB();
+        
+        // Procesar un texto
+        String texto = "el gato come pescado. el gato duerme. " +
+                      "el perro come carne. el perro duerme.";
+        
+        indice.procesarTexto(texto);
+        
+        // Mostrar resultados
+        indice.mostrarIndice();
+        
+        // Búsquedas específicas
+        System.out.println("'el' aparece " + indice.obtenerCantidad("el") + " veces");
+        System.out.println("'gato' aparece " + indice.obtenerCantidad("gato") + " veces");
+        System.out.println("'xyz' aparece " + indice.obtenerCantidad("xyz") + " veces");
+    }
+}
+```
+
+
+NOTAS IMPORTANTES:
+==================
+
+1. RECURSIÓN vs ITERACIÓN:
+   - agregarRecursivo() es la implementación del Ejercicio 1
+   - agregarIterativo() es la solución al Ejercicio 2
+   - Ambas están implementadas en ABBEnterosImpl
+
+2. COMPLEJIDAD:
+   - Todos los análisis están incluidos en los comentarios del código
+   - Ver también EJERCICIO_3_5_7_ANALISIS.txt para detalles
+
+3. TESTS:
+   - ABBEnterosTest.java contiene 11 tests que validan toda la funcionalidad
+   - Todos deben pasar sin errores
+
+4. PARTICULARIDADES:
+   - Inorden imprime los valores en ORDEN ASCENDENTE (propiedad del ABB)
+   - No se permiten duplicados (se valida en agregar)
+   - minimo() y maximo() lanzan IllegalStateException si el árbol está vacío
+
+5. CONSIDERACIONES DE DISEÑO:
+   - Se usa recursión en la mayoría de métodos (como se especifica)
+   - Se implementó agregarIterativo() como alternativa (Ejercicio 2)
+   - Los recorridos mantienen el orden esperado
+
+6. EXTENSIONES FUTURAS:
+   - Para árboles muy grandes, considerar AVL o Árbol Rojo-Negro
+   - Para búsquedas frecuentes en datos estáticos, considerar búsqueda binaria
+   - Para aplicaciones de producción, validar entrada y manejar más excepciones
+
+
+TROUBLESHOOTING:
+================
+
+Problema: "No se encuentra la clase ABBEnteros"
+Solución: Verificar que todos los .java estén en el directorio ABB/
+          Compilar con: javac ABB/*.java
+
+Problema: StackOverflowError al ejecutar TestRecursividadABB
+Solución: Esto es NORMAL si usa agregarRecursivo()
+          Usar agregarIterativo() para evitarlo
+          Ver EJERCICIO_2_ANALISIS.txt para detalles
+
+Problema: IndiceABB no encuentra Texto.txt
+Solución: Asegurar que Texto.txt esté en el directorio raíz del proyecto
+          O pasar la ruta correcta al método procesarArchivo()
+
+Problema: Tests no compilan
+Solución: Verificar que las clases estén en el paquete ABB
+          Que el archivo comience con: package ABB;
+
+Problema: Errores de import
+Solución: Todas las clases están en el paquete ABB
+          Los imports deben ser: import ABB.*;
+
+
+REFERENCIAS:
+=============
+
+Para más información sobre Árboles Binarios de Búsqueda:
+- Wikipedia: Binary Search Tree
+- GeeksforGeeks: Binary Search Tree
+- Cormen, Leiserson, Rivest: Introduction to Algorithms (Capítulo 12)
+
+Para analizar complejidad:
+- Big O Notation: https://en.wikipedia.org/wiki/Big_O_notation
+- Visualizar árboles: https://www.cs.usfca.edu/~galles/visualization/BST.html
+
+
+AUTOR Y FECHA:
+================
+
+Solución completada para UADE - Programación II
+Árbol Binario de Búsqueda - Práctica Completa
+2026

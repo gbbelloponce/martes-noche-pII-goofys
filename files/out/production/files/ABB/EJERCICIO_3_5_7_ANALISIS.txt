@@ -1,0 +1,282 @@
+ANÁLISIS DE COMPLEJIDAD Y COMPARACIONES
+=======================================
+
+EJERCICIO 3: BÚSQUEDA EN ABB
+============================
+
+COMPLEJIDAD TEMPORAL - BÚSQUEDA EN ABB:
+
+Mejor Caso: O(1)
+  - El valor está en la raíz
+  - Ejemplo: buscar 5 en {5, 3, 7}
+  - Una sola comparación
+
+Peor Caso: O(n)
+  - El árbol es una lista degenerada
+  - El valor está en la hoja más profunda
+  - Ejemplo: buscar 50000 en {1, 2, 3, ..., 50000}
+  - Necesita 50,000 comparaciones
+
+Caso Promedio: O(log n)
+  - El árbol está balanceado
+  - Con n = 1,000,000, necesita ~20 comparaciones
+  - Complejidad logarítmica
+
+COMPLEJIDAD ESPACIAL:
+  - Recursiva: O(h) donde h es la altura
+  - Iterativa: O(1) - sin pila de llamadas
+
+
+COMPARACIÓN: ABB vs BÚSQUEDA LINEAL vs BÚSQUEDA BINARIA
+========================================================
+
+Escenario: Buscar un elemento en 1,000,000 de elementos
+
+┌────────────────────────┬──────────┬───────────┬───────────┐
+│ Operación              │ ABB      │ Lineal    │ Binaria   │
+├────────────────────────┼──────────┼───────────┼───────────┤
+│ Búsqueda (mejor)       │ O(1)     │ O(1)      │ O(1)      │
+│ Búsqueda (promedio)    │ O(log n) │ O(n/2)    │ O(log n)  │
+│ Búsqueda (peor)        │ O(n)     │ O(n)      │ O(log n)  │
+├────────────────────────┼──────────┼───────────┼───────────┤
+│ Inserción (mejor)      │ O(1)     │ O(1)      │ O(n)      │
+│ Inserción (promedio)   │ O(log n) │ O(1)      │ O(n)      │
+│ Inserción (peor)       │ O(n)     │ O(1)      │ O(n)      │
+├────────────────────────┼──────────┼───────────┼───────────┤
+│ Eliminación (mejor)    │ O(1)     │ O(n)      │ O(n)      │
+│ Eliminación (promedio) │ O(log n) │ O(n/2)    │ O(n)      │
+│ Eliminación (peor)     │ O(n)     │ O(n)      │ O(n)      │
+├────────────────────────┼──────────┼───────────┼───────────┤
+│ Búsqueda (1M, actual)  │ ~20      │ ~500,000  │ ~20       │
+│ Comparaciones          │ ops      │ ops       │ ops       │
+└────────────────────────┴──────────┴───────────┴───────────┘
+
+ANÁLISIS DETALLADO:
+
+1) BÚSQUEDA LINEAL:
+   ```
+   Recorre: [1] [2] [3] [4] ... [500000] ← ENCONTRADO
+   Comparaciones: 500,000 (en el peor caso)
+   ```
+   
+   Complejidad: O(n)
+   - Siempre necesita revisar elementos hasta encontrarlo
+   - Muy ineficiente con datos grandes
+   
+   Caso práctico con n = 1,000,000:
+     - Mejor caso: 1 comparación (el primero)
+     - Peor caso: 1,000,000 comparaciones (el último)
+     - Promedio: 500,000 comparaciones
+
+2) BÚSQUEDA BINARIA (en array ordenado):
+   ```
+   Array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+   Buscar 8:
+   
+   Paso 1: Revisar mitad [5] - 8 > 5, ir derecha
+   Paso 2: Revisar mitad [7, 8, 9] - 8 > 7, ir derecha
+   Paso 3: Revisar mitad [8, 9] - 8 == 8, ENCONTRADO
+   ```
+   
+   Complejidad: O(log n)
+   - Elimina la mitad de posibilidades en cada paso
+   - log₂(1,000,000) ≈ 20 comparaciones máximo
+   - Muy eficiente para búsqueda
+   
+   PERO: Inserción es O(n) porque necesita desplazar elementos
+   
+   Array original:  [1, 5, 7, 8, 9, 10]
+   Insertar 6:      [1, 5, 6, ?, ?, ?]
+                              ↑ Desplazar todos a la derecha
+   Array final:     [1, 5, 6, 7, 8, 9, 10]
+   
+   Con 1,000,000 elementos, desplazar toma 1,000,000 operaciones
+
+3) BÚSQUEDA EN ABB (balanceado):
+   ```
+        50000
+        /     \
+      25000   75000
+      /   \   /   \
+   12500 37500 ...
+   ```
+   
+   Complejidad: O(log n)
+   - Similar a búsqueda binaria
+   - ~20 comparaciones para 1,000,000 elementos
+   
+   Ventaja: Inserción es también O(log n)
+   - No necesita desplazar elementos
+   - Crea un nuevo nodo y lo enlaza
+   - Operación rápida
+
+   Desventaja: Si degenerado es O(n)
+   - Si los datos son: 1, 2, 3, ..., 1,000,000
+   - El árbol es una lista
+   - Búsqueda toma 1,000,000 comparaciones
+
+
+RECOMENDACIÓN POR CASO DE USO:
+──────────────────────────────
+
+Caso 1: Datos estáticos, solo búsqueda
+  → Usar búsqueda binaria en array ordenado
+  → Mejor si no hay inserción/eliminación
+
+Caso 2: Datos dinámicos, muchas inserciones y búsquedas
+  → Usar ABB (asumiendo balanceo)
+  → O(log n) para todo
+
+Caso 3: Datos pequeños o ya no ordenados
+  → Búsqueda lineal es aceptable
+  → Más simple de implementar
+
+Caso 4: Árbol potencialmente degenerado
+  → Considerar AVL o Árbol Rojo-Negro
+  → Garantizan O(log n) incluso en casos malos
+
+
+EJERCICIO 5: RECORRIDOS
+=======================
+
+PARTICULARIDAD DEL INORDEN EN ABB:
+
+Propiedad Fundamental:
+El recorrido INORDEN de un ABB imprime los valores en ORDEN ASCENDENTE.
+
+Ejemplo:
+        8
+       / \
+      3   10
+     / \
+    1   6
+       / \
+      4   7
+
+Inorden: 1, 3, 4, 6, 7, 8, 10
+         ↑
+         ORDEN ASCENDENTE
+
+¿POR QUÉ?
+
+Porque en un ABB:
+  - Izquierdo < Nodo < Derecho
+  
+El inorden (izq, nodo, der) garantiza:
+  1. Procesa todos los menores (izquierda)
+  2. Procesa el medio (nodo)
+  3. Procesa todos los mayores (derecha)
+
+Resultado: orden ascendente automático
+
+
+COMPARACIÓN DE RECORRIDOS:
+
+Árbol:        5
+             / \
+            3   7
+           / \
+          1   4
+
+1) INORDEN (izquierda, nodo, derecha):
+   - Visita 1
+   - Visita 3
+   - Visita 4
+   - Visita 5
+   - Visita 7
+   - Resultado: [1, 3, 4, 5, 7] ← ORDEN ASCENDENTE
+   - Uso: Obtener elementos ordenados
+
+2) PREORDEN (nodo, izquierda, derecha):
+   - Visita 5
+   - Visita 3
+   - Visita 1
+   - Visita 4
+   - Visita 7
+   - Resultado: [5, 3, 1, 4, 7]
+   - Uso: Copiar el árbol (raíz primero)
+
+3) POSTORDEN (izquierda, derecha, nodo):
+   - Visita 1
+   - Visita 4
+   - Visita 3
+   - Visita 7
+   - Visita 5
+   - Resultado: [1, 4, 3, 7, 5]
+   - Uso: Eliminar el árbol (hijos antes que padre)
+
+
+COMPLEJIDAD DE RECORRIDOS:
+
+COMPLEJIDAD TEMPORAL:
+- Todos: O(n)
+- Cada nodo se visita exactamente UNA VEZ
+- Con n = 1,000,000, se ejecutan 1,000,000 operaciones
+
+COMPLEJIDAD ESPACIAL:
+- Recursiva: O(h) donde h es la altura
+  * Mejor caso: O(log n) - árbol balanceado
+  * Peor caso: O(n) - árbol degenerado
+  
+- Iterativa: O(h) también (usa una pila explícita)
+
+EJEMPLO DE ANÁLISIS:
+Recorrido de 1,000,000 elementos:
+  - Operaciones: 1,000,000
+  - Memoria pila (árbol balanceado): ~60 frames (log₂(1M) ≈ 20)
+  - Memoria pila (árbol degenerado): ~1,000,000 frames [PROBLEMA]
+
+
+EJERCICIO 7: VALIDACIÓN DE RANGO
+=================================
+
+PROBLEMA:
+Verificar que TODOS los valores del ABB están entre [desde, hasta]
+
+Ejemplo:
+  desde = 5, hasta = 15
+  
+  Árbol:        10       ✓ Válido (5-15)
+               /  \
+              7    12    ✓ Ambos válidos
+             / \   /
+            3   8 11    ✗ 3 está fuera (< 5)
+  
+  Resultado: FALSO (el árbol NO está completamente en rango)
+
+ALGORITMO:
+
+enRangoRecursivo(nodo, desde, hasta):
+  1. Si nodo es null → true (está en rango)
+  2. Si nodo.valor < desde o > hasta → false (fuera de rango)
+  3. Verificar recursivamente:
+     - Izquierda en [desde, nodo.valor-1]
+     - Derecha en [nodo.valor+1, hasta]
+
+OPTIMIZACIÓN:
+Al pasar rangos específicos a cada subárbol, se evita revisar todos los nodos.
+
+Si el subárbol izquierdo está completamente < nodo.valor,
+no necesitamos verificar > desde para cada nodo interno.
+
+
+COMPLEJIDAD:
+
+TEMPORAL: O(n) en peor caso
+  - Necesita visitar todos los nodos si están en rango
+  - Si encuentra uno fuera, puede retornar temprano
+  
+ESPACIAL: O(h)
+  - Recursiva: O(h) pila
+  - Iterativa: O(h) pila explícita
+
+EJEMPLO:
+Árbol con 1,000,000 elementos:
+  - Si todos están en rango: O(1,000,000) = 1M operaciones
+  - Si el primero está fuera: O(1) = 1 operación
+
+
+CASOS DE USO:
+1. Validar que datos importados están en rango
+2. Verificar integridad del árbol
+3. Seguridad: validar que todos los valores cumplen una restricción

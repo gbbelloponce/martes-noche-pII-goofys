@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="martes-noche-pII-goofys">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Cola_Dinamica.zip!/" />
+      <root url="jar://$PROJECT_DIR$/Cola_Prioridad_Dinamica -Joaquin Fraga-Ejercicio distribucion de tickets.zip!/" />
+      <root url="jar://$PROJECT_DIR$/Pila_Dinamica - Nazareno Ghitarroni - Historial Web.zip!/" />
+      <root url="jar://$PROJECT_DIR$/ConjuntoDinamico.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

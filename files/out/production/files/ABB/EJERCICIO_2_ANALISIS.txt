@@ -1,0 +1,260 @@
+EJERCICIO 2 - ANÁLISIS DETALLADO: INSERCIÓN ITERATIVA
+=====================================================
+
+PARTE 1: ¿QUÉ HACE TestRecursividadABB.main()?
+==============================================
+
+El método main() de TestRecursividadABB ejecuta el siguiente algoritmo:
+
+```java
+ABBEnteros abb = new ABBEnterosImpl();
+int profundidad = 0;
+
+try {
+    for (int i = 1; i <= 50000; i++) {
+        abb.agregar(i);
+        profundidad++;
+    }
+} catch (StackOverflowError e) {
+    System.out.println("StackOverflow en profundidad: " + profundidad);
+}
+System.out.println("Fin del programa");
+```
+
+DESCRIPCIÓN:
+1. Crea una instancia vacía de ABBEnterosImpl
+2. Intenta agregar 50,000 números enteros en ORDEN ASCENDENTE (1, 2, 3, ..., 50000)
+3. Mantiene un contador de "profundidad" (número de elementos agregados antes del error)
+4. Captura la excepción StackOverflowError si ocurre
+5. Imprime la profundidad en la que se produjo el error
+
+PROPÓSITO:
+Demostrar que la implementación recursiva naive (agregarRecursivo) tiene limitaciones
+fundamentales cuando se trabaja con ciertos patrones de datos.
+
+
+PARTE 2: PROBLEMÁTICA Y RELACIÓN CON RECURSIÓN/ITERACIÓN
+=========================================================
+
+PROBLEMA IDENTIFICADO:
+Al agregar números en orden ascendente (1, 2, 3, ..., 50000), el ABB se convierte
+en una estructura DEGENERADA, esencialmente una lista enlazada hacia la derecha.
+
+VISUALIZACIÓN:
+Primeros pasos:
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+           \
+            ...
+             \
+              50000
+
+Esto ocurre porque:
+- 1 es la raíz
+- 2 > 1, va a la derecha
+- 3 > 2, va a la derecha de 2
+- 4 > 3, va a la derecha de 3
+- Y así sucesivamente...
+
+IMPACTO EN RECURSIÓN:
+La implementación recursiva agregarRecursivo(raiz, valor) realiza:
+
+agregarRecursivo(raiz, 1)
+├─ agregarRecursivo(raiz.derecho=null, 2)
+│  └─ agregarRecursivo(raiz.derecho.derecho=null, 3)
+│     └─ agregarRecursivo(raiz.derecho.derecho.derecho=null, 4)
+│        └─ ... (50,000 llamadas anidadas)
+│           └─ agregarRecursivo(null, 50000)
+│              └─ return new Nodo(50000)
+
+PROBLEMA: Cada llamada a agregarRecursivo() ocupa espacio en la PILA DE EJECUCIÓN (stack).
+Con 50,000 valores, se hacen 50,000 llamadas recursivas anidadas.
+
+IMPACTO EN ITERACIÓN:
+La implementación iterativa agregarIterativo(valor) ejecuta:
+
+while (true) {
+    // Navega el árbol
+    if (valor < actual.valor) {
+        // Ir a izquierda
+    } else {
+        // Ir a derecha
+    }
+}
+
+No hay llamadas recursivas: solo usa variables locales y bucles.
+La pila NO crece: reutiliza el mismo espacio de memoria.
+
+
+PARTE 3: ¿POR QUÉ OCURRE UN StackOverflowError?
+==============================================
+
+DEFINICIÓN:
+StackOverflowError es una excepción que lanza la JVM cuando la pila de ejecución
+(call stack) se agota.
+
+MECANISMO EN DETALLE:
+
+1. ESTRUCTURA DE LA PILA:
+   La JVM asigna un área de memoria llamada "stack" (típicamente 1-8 MB en Java).
+   
+   Esta pila almacena:
+   - Marcos de activación (stack frames) para cada llamada de función
+   - Variables locales
+   - Direcciones de retorno
+   
+2. CADA LLAMADA RECURSIVA OCUPA ESPACIO:
+   agregarRecursivo(raiz, 1):
+   ┌─────────────────────────────┐
+   │ Stack Frame 1               │ <- agregarRecursivo(raiz, 1)
+   │ actual = raiz               │
+   │ valor = 1                   │
+   │ dirección de retorno        │
+   ├─────────────────────────────┤
+   │ Stack Frame 2               │ <- agregarRecursivo(null, 2)
+   │ actual = null               │
+   │ valor = 2                   │
+   │ dirección de retorno        │
+   ├─────────────────────────────┤
+   │ Stack Frame 3               │ <- agregarRecursivo(null, 3)
+   │ actual = null               │
+   │ valor = 3                   │
+   │ dirección de retorno        │
+   ├─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┤
+   │ ... (hasta 50,000 frames)  │
+   ├─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┤
+   │ Stack Frame N               │ <- agregarRecursivo(null, 50000)
+   │ actual = null               │
+   │ valor = 50000              │
+   │ dirección de retorno        │
+   ├─────────────────────────────┤
+   │ [ERROR] STACK FULL!!!       │ <- Siguiente frame no cabe
+   └─────────────────────────────┘
+   
+   RESULTADO: StackOverflowError
+
+3. CÁLCULO APROXIMADO:
+   - Cada stack frame ocupa ~100-200 bytes
+   - Pila típica: 1 MB = 1,000,000 bytes
+   - Máximo de frames: 1,000,000 / 150 ≈ 6,666 frames
+   - Por eso el error ocurre alrededor de 6,000-10,000 elementos
+
+4. ITERACIÓN NO TIENE ESTE PROBLEMA:
+   agregarIterativo(valor):
+   ┌─────────────────────────────┐
+   │ Stack Frame                 │ <- agregarIterativo()
+   │ actual = (variable mutable) │ <- Se reasigna en cada iteración
+   │ valor = parámetro           │
+   │ dirección de retorno        │
+   └─────────────────────────────┘
+   
+   La variable 'actual' se reasigna sin crear nuevos frames.
+   El espacio se reutiliza.
+   
+   La pila SIEMPRE tiene un solo frame activo.
+
+
+PARTE 4: COMPARACIÓN DE IMPLEMENTACIONES
+=========================================
+
+INSERCIÓN RECURSIVA:
+───────────────────
+
+Ventajas:
+  ✓ Código más limpio y elegante
+  ✓ Refleja directamente la estructura recursiva del árbol
+  ✓ Fácil de entender para quien conoce recursión
+  ✓ Menos variables locales para gestionar
+  ✓ Código más corto (menos líneas)
+  ✓ Mantiene mejor la referencia a través de retornos
+
+Desventajas:
+  ✗ Límite de profundidad debido a la pila (StackOverflowError)
+  ✗ Mayor overhead de llamadas de función
+  ✗ Más lento en ejecución
+  ✗ No funciona bien con datos degenerados
+  ✗ Difícil de debuggear (stack trace complejo)
+  ✗ Mayor consumo de memoria (cada frame ocupa espacio)
+
+Complejidad espacial: O(h) donde h es la altura
+  - Mejor caso: O(log n) en árbol balanceado
+  - Peor caso: O(n) en lista degenerada [PROBLEMA]
+
+
+INSERCIÓN ITERATIVA:
+────────────────────
+
+Ventajas:
+  ✓ Sin límite de profundidad (excepto la memoria del heap)
+  ✓ Más rápido (menos overhead)
+  ✓ Funciona bien con cualquier patrón de datos
+  ✓ Menor consumo de memoria (no crea frames)
+  ✓ Stack trace simple en caso de error
+  ✓ Más eficiente en sistemas con memoria limitada
+
+Desventajas:
+  ✗ Código más complejo
+  ✗ Más variables locales para gestionar
+  ✗ Más líneas de código
+  ✗ Menos intuitivo para algunos
+  ✗ Requiere entender loops y control de flujo
+
+Complejidad espacial: O(1) - solo variables locales
+  - Siempre constante, no depende de n ni h
+
+
+COMPARACIÓN DIRECTA:
+───────────────────
+
+Aspecto                    Recursiva           Iterativa
+─────────────────────────────────────────────────────────
+Profundidad máxima         ~10,000             Ilimitada*
+Velocidad                  Más lenta           Más rápida
+Complejidad espacial       O(h)                O(1)
+Memoria en stack           O(h) * sizeof(frame) O(1)
+Claridad del código        Mejor               Peor
+Facilidad de uso           Mejor               Peor
+Overflow en datos mal      SÍ                  NO
+distribuidos
+Escalabilidad              LIMITADA            EXCELENTE
+
+* En teoría, limitada solo por la memoria disponible
+
+
+RECOMENDACIONES DE USO:
+──────────────────────
+
+1. USAR RECURSIVA cuando:
+   - Los datos están bien distribuidos (árbol balanceado)
+   - La altura del árbol es pequeña (< 100 niveles)
+   - La claridad del código es prioritaria
+   - Se trabaja con árboles pequeños
+
+2. USAR ITERATIVA cuando:
+   - Los datos pueden estar degenerados
+   - El árbol puede ser muy profundo
+   - Se necesita máxima performance
+   - Se trabaja con grandes volúmenes de datos
+   - Se necesita confiabilidad (sin riesgo de StackOverflow)
+
+3. EQUILIBRIO HÍBRIDO:
+   - Usar iterativa para operaciones críticas (agregar, eliminar)
+   - Usar recursiva para operaciones ocasionales (recorridos)
+
+
+CONCLUSIÓN:
+──────────
+
+El StackOverflowError en TestRecursividadABB demuestra una limitación fundamental
+de la recursión: la pila tiene capacidad finita.
+
+Mientras que la recursión es elegante y natural para estructuras recursivas,
+la iteración es más robusta y escalable para aplicaciones del mundo real.
+
+En la práctica profesional, se prefiere la iteración para operaciones críticas,
+aunque muchos algoritmos de recorrido siguen siendo mejor implementados recursivamente.
